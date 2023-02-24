@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic;
 using System.Data.SqlClient;
 
 namespace ChessApp
@@ -12,12 +12,10 @@ namespace ChessApp
         {
             if (!CheckDatabaseExists())
             {
-                conn.Close();
                 CreateDatabase();
             }
             else
             {
-                conn.Close();
                 conn.ConnectionString = @"Data Source = (localdb)\MSSQLLocalDB; Integrated Security = true; Database = ChessDatabase;";
             }
         }
@@ -26,7 +24,9 @@ namespace ChessApp
         {
             cmd.CommandText = $"SELECT db_id('{"ChessDatabase"}')";
             conn.Open();
-            return cmd.ExecuteScalar() != DBNull.Value;
+            bool exists = cmd.ExecuteScalar() != DBNull.Value;
+            conn.Close();
+            return exists;
         }
 
         public static void CreateDatabase()
@@ -64,35 +64,39 @@ namespace ChessApp
             conn.Close();
         }
 
-        public static int LoginUser(string name, string pass, bool what)
+        public static int LoginUser(string name, string pass, bool logIn)
         {
+                //creates user account or logs the user in. What happens is dertermined by logIn
                 conn.Open();
                 cmd.CommandText = "Select Username, Pass from Players;";
                 SqlDataReader read = cmd.ExecuteReader();
-
-                if (what)
+                if (logIn)
                 {
                     while (read.Read())
                     {
                         if (name.TrimEnd().Equals(read.GetString(0).TrimEnd()))
-                        {                          
+                        {
+                            conn.Close();
                             return 0;
                         }
                     }
+                    conn.Close();
                     return -1;
                 }
-                if (!what)
+                if (!logIn)
                 {
                     while (read.Read())
                     {
                         if (name.Equals(read.GetString(0).TrimEnd()) && BCrypt.CheckPassword(pass, read.GetString(1).TrimEnd()))
                         {
+                            conn.Close();
                             return 1;
                         }
                     }
+                    conn.Close();
                     return -1;
                 }
-
+            conn.Close();
             return 0;
         }
     }
