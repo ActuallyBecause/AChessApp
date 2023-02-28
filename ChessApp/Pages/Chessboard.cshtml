@@ -1,0 +1,23 @@
+﻿@page
+@model ChessModell
+@{
+    ViewData["Title"] = "Register";
+}
+
+<body>
+
+  @for (int i = 0; i < 4; i++) 
+   {
+    <form>
+        <button type="Submit" asp-page-handler="Register" class="btnBlack">  </button>
+                    <br>
+                <button type="Submit" asp-page-handler="Register" class="btnWhite"> </button>
+        </form>
+    }
+        </body>
+
+
+  
+
+
+

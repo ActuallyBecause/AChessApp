@@ -7,7 +7,7 @@ namespace ChessApp.Pages
     {
         public IActionResult OnPostLogin()
         {
-            return RedirectToPage("Login");
+            return RedirectToPage("Chessboard");
         }
 
         public IActionResult OnPostRegister()

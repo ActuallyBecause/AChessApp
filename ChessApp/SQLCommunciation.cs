@@ -56,7 +56,7 @@ namespace ChessApp
         public static void CreateUser(string name, string pass)
         {
             DateTime currentdate = DateTime.Now;
-     
+            conn.Close();
             conn.Open();
             cmd.CommandText = "Insert Into Players (Username, Pass, Elo, Gamesplayed, Gameswon, Gameslost, Registerdate, " +
                 "Highestelo, Lowestelo) values ('" + name + "','" + BCrypt.HashPassword(pass, BCrypt.GenerateSalt(5)) + "', 1500, 0, 0, 0, '" + currentdate.ToString("yyyy-MM-dd") + "' , 0, 0);";
