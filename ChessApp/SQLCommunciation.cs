@@ -26,7 +26,9 @@ namespace ChessApp
         {
             cmd.CommandText = $"SELECT db_id('{"ChessDatabase"}')";
             conn.Open();
-            return cmd.ExecuteScalar() != DBNull.Value;
+            bool ret =  cmd.ExecuteScalar() != DBNull.Value;
+            conn.Close();
+            return ret;
         }
 
         public static void CreateDatabase()
