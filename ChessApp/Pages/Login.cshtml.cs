@@ -24,7 +24,8 @@ namespace ChessApp.Pages
             else
             {
                 DisplayProblem = "Success";
-                RedirectToPage("Chessboard");
+                Response.Redirect("Chessboard");
+                
             }
 
             SQLCommunication.conn.Close();
